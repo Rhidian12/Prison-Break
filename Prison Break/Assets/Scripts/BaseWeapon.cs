@@ -10,10 +10,13 @@ public class BaseWeapon : MonoBehaviour
     [SerializeField] protected Transform m_BulletSpawnPoint;
     [SerializeField] protected GameObject m_BulletPrefab;
     [SerializeField] protected float m_FireRate = 0f;
-    [SerializeField] protected int m_ClipSize = 0;
     [SerializeField] protected Transform m_AimPoint;
+    [SerializeField] protected Queue<Clip> m_Clips = new Queue<Clip>();
 
-    protected int m_CurrentAmountOfBullets = 0;
+    public Queue<Clip> AmountOfClips
+    {
+        get => m_Clips;
+    }
 
     //private Image m_Reticle;
     //private Camera m_Camera;
@@ -21,8 +24,6 @@ public class BaseWeapon : MonoBehaviour
 
     private void Start()
     {
-        m_CurrentAmountOfBullets = m_ClipSize;
-
         //m_Reticle = GetComponentInChildren<Image>();
         //m_Camera = Camera.main;
     }
@@ -39,19 +40,41 @@ public class BaseWeapon : MonoBehaviour
         m_HasShotBullet = false;
     }
 
-    private void FireBullet()
+    public void Reload()
     {
-        if (m_CurrentAmountOfBullets <= 0)
+        // do we have any clips to reload with?
+        if (m_Clips.Count == 0)
             return;
 
+        // reload
+        m_Clips.Enqueue(new Clip());
+
+        Clip clip = m_Clips.Dequeue();
+        // do we have any bullets remaining in the clip we're about to get rid of?
+        if (clip.AmountOfRemainingBullets > 0)
+            m_Clips.Enqueue(new Clip(clip.AmountOfRemainingBullets)); // get a new clip with the remaining bullets
+    }
+
+    private void FireBullet()
+    {
+        // Check if we can fire the gun
+        if (m_Clips.Count == 0)
+            return;
+
+        Clip clip = m_Clips.Peek();
+
+        // If the player has pressed the trigger
         if (m_HasShotBullet)
         {
-            GameObject bullet = Instantiate(m_BulletPrefab, m_BulletSpawnPoint.position, Quaternion.identity);
-            bullet.GetComponentInChildren<BulletMovement>().Velocity = (m_AimPoint.position - m_BulletSpawnPoint.position).normalized;
+            if (clip.CanFire())
+            {
+                GameObject bullet = Instantiate(m_BulletPrefab, m_BulletSpawnPoint.position, Quaternion.identity);
+                bullet.GetComponentInChildren<BulletMovement>().Velocity = (m_AimPoint.position - m_BulletSpawnPoint.position).normalized;
 
-            m_FireTimer += 1f / m_FireRate;
+                m_FireTimer += 1f / m_FireRate;
 
-            m_CurrentAmountOfBullets = Mathf.Clamp(m_CurrentAmountOfBullets - 1, 0, m_ClipSize);
+                clip.Fire();
+            }
         }
     }
 }
