@@ -5,22 +5,34 @@ using UnityEngine;
 public class Clip : MonoBehaviour
 {
     [SerializeField] private int m_ClipSize = 0;
+    [SerializeField] private ClipType m_ClipType;
     
     private int m_CurrentAmountOfBullets = 0;
+
+    public enum ClipType
+    {
+        Pistol
+    }
 
     public int AmountOfRemainingBullets
     {
         get => m_CurrentAmountOfBullets;
     }
-
-    public Clip()
+    public ClipType GetClipType
     {
-        m_CurrentAmountOfBullets = m_ClipSize;
+        get => m_ClipType;
     }
 
-    public Clip(int amountOfBullets)
+    public Clip(ClipType clipType)
+    {
+        m_CurrentAmountOfBullets = m_ClipSize;
+        m_ClipType = clipType;
+    }
+
+    public Clip(int amountOfBullets, ClipType clipType)
     {
         m_CurrentAmountOfBullets = amountOfBullets;
+        m_ClipType = clipType;
     }
 
     private void Awake()

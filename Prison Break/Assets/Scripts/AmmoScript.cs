@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AmmoScript : MonoBehaviour
 {
+    [SerializeField] private Clip.ClipType m_ClipType;
+
     private bool m_IsPickedUp;
 
     // Start is called before the first frame update
@@ -24,7 +26,7 @@ public class AmmoScript : MonoBehaviour
         {
             BaseWeapon weapon = other.GetComponentInChildren<BaseWeapon>();
 
-            
+            weapon.AddClip(new Clip(m_ClipType));
         }
     }
 }

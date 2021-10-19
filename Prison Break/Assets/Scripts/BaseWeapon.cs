@@ -7,15 +7,17 @@ public class BaseWeapon : MonoBehaviour
 {
     [HideInInspector] public bool m_HasShotBullet = false;
 
-    [SerializeField] protected Transform m_BulletSpawnPoint;
-    [SerializeField] protected GameObject m_BulletPrefab;
-    [SerializeField] protected float m_FireRate = 0f;
-    [SerializeField] protected Transform m_AimPoint;
-    [SerializeField] protected Queue<Clip> m_Clips = new Queue<Clip>();
+    [SerializeField] private Transform m_BulletSpawnPoint;
+    [SerializeField] private GameObject m_BulletPrefab;
+    [SerializeField] private float m_FireRate = 0f;
+    [SerializeField] private Transform m_AimPoint;
+    [SerializeField] private Queue<Clip> m_Clips = new Queue<Clip>();
+    [SerializeField] private Clip.ClipType m_ClipType;
 
-    public Queue<Clip> AmountOfClips
+    public void AddClip(Clip clip)
     {
-        get => m_Clips;
+        if (clip.GetClipType == m_ClipType)
+            m_Clips.Enqueue(clip);
     }
 
     //private Image m_Reticle;
@@ -47,12 +49,12 @@ public class BaseWeapon : MonoBehaviour
             return;
 
         // reload
-        m_Clips.Enqueue(new Clip());
+        m_Clips.Enqueue(new Clip(m_ClipType));
 
         Clip clip = m_Clips.Dequeue();
         // do we have any bullets remaining in the clip we're about to get rid of?
         if (clip.AmountOfRemainingBullets > 0)
-            m_Clips.Enqueue(new Clip(clip.AmountOfRemainingBullets)); // get a new clip with the remaining bullets
+            m_Clips.Enqueue(new Clip(clip.AmountOfRemainingBullets, m_ClipType)); // get a new clip with the remaining bullets
     }
 
     private void FireBullet()
