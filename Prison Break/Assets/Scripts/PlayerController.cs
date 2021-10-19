@@ -13,9 +13,9 @@ public class PlayerController : MonoBehaviour
     private string m_HorizontalKeyboardAxis = "KeyboardHorizontal";
     private string m_VerticalKeyboardAxis = "KeyboardVertical";
     private string m_PlayerFiringAxis = "Firing";
-    private string m_MouseX = "MouseX";
-    private string m_MouseY = "MouseY";
-    private string m_InfraredScanner = "Scanning";
+    private string m_MouseXAxis = "MouseX";
+    private string m_MouseYAxis = "MouseY";
+    private string m_InfraredScannerAxis = "Scanning";
 
     public InfraredScanner SetInfraredScannerScript
     {
@@ -49,12 +49,12 @@ public class PlayerController : MonoBehaviour
 
     private void HandlePlayerAimInput()
     {
-        m_PlayerAimScript.CurrentRotation = new Vector2(Input.GetAxisRaw(m_MouseX), Input.GetAxisRaw(m_MouseY));
+        m_PlayerAimScript.CurrentRotation = new Vector2(Input.GetAxisRaw(m_MouseXAxis), Input.GetAxisRaw(m_MouseYAxis));
     }
 
     private void HandleInfraredScannerInput()
     {
-        if (Input.GetAxisRaw(m_InfraredScanner) > 0f)
+        if (m_InfraredScannerScript != null && Input.GetAxisRaw(m_InfraredScannerAxis) > 0f)
             m_InfraredScannerScript.ScanAhead();
     }
 }
