@@ -11,6 +11,7 @@ public class Clip : MonoBehaviour
 
     public enum ClipType
     {
+        None,
         Pistol
     }
 
@@ -49,6 +50,16 @@ public class Clip : MonoBehaviour
         // decrement how many bullets we have
         if (--m_CurrentAmountOfBullets <= 0)
             m_CurrentAmountOfBullets = 0; // we cant have negative bullets
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            other.gameObject.GetComponent<BaseWeapon>().AddClip(this);
+
+            Destroy(gameObject);
+        }
     }
 
     public bool CanFire()

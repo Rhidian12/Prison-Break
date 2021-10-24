@@ -5,29 +5,22 @@ using UnityEngine.UI;
 
 public class BaseWeapon : MonoBehaviour
 {
-    [HideInInspector] public bool m_HasShotBullet = false;
 
     [SerializeField] private Transform m_BulletSpawnPoint;
     [SerializeField] private GameObject m_BulletPrefab;
     [SerializeField] private float m_FireRate = 0f;
     [SerializeField] private Transform m_AimPoint;
-    [SerializeField] private Queue<Clip> m_Clips = new Queue<Clip>();
+    [SerializeField] private List<Clip> m_Clips = new List<Clip>();
     [SerializeField] private Clip.ClipType m_ClipType;
+    [SerializeField] private bool m_DoesGunStartWithAClip = false;
 
-    public void AddClip(Clip clip)
-    {
-        if (clip.GetClipType == m_ClipType)
-            m_Clips.Enqueue(clip);
-    }
-
-    //private Image m_Reticle;
-    //private Camera m_Camera;
+    private bool m_HasShotBullet = false;
     private float m_FireTimer = 0f;
 
     private void Start()
     {
-        //m_Reticle = GetComponentInChildren<Image>();
-        //m_Camera = Camera.main;
+        if (m_DoesGunStartWithAClip)
+            m_Clips.Add(new Clip(m_ClipType));
     }
 
     // Update is called once per frame
@@ -42,6 +35,12 @@ public class BaseWeapon : MonoBehaviour
         m_HasShotBullet = false;
     }
 
+    public void AddClip(Clip clip)
+    {
+        if (clip.GetClipType == m_ClipType)
+            m_Clips.Add(clip);
+    }
+
     public void Reload()
     {
         // do we have any clips to reload with?
@@ -49,12 +48,18 @@ public class BaseWeapon : MonoBehaviour
             return;
 
         // reload
-        m_Clips.Enqueue(new Clip(m_ClipType));
+        m_Clips.Add(new Clip(m_ClipType));
 
-        Clip clip = m_Clips.Dequeue();
+        Clip clip = m_Clips[0];
+        m_Clips.RemoveAt(0);
         // do we have any bullets remaining in the clip we're about to get rid of?
         if (clip.AmountOfRemainingBullets > 0)
-            m_Clips.Enqueue(new Clip(clip.AmountOfRemainingBullets, m_ClipType)); // get a new clip with the remaining bullets
+            m_Clips.Add(new Clip(clip.AmountOfRemainingBullets, m_ClipType)); // get a new clip with the remaining bullets
+    }
+
+    public void Fire()
+    {
+        m_HasShotBullet = true;
     }
 
     private void FireBullet()
@@ -63,7 +68,7 @@ public class BaseWeapon : MonoBehaviour
         if (m_Clips.Count == 0)
             return;
 
-        Clip clip = m_Clips.Peek();
+        Clip clip = m_Clips[0];
 
         // If the player has pressed the trigger
         if (m_HasShotBullet)

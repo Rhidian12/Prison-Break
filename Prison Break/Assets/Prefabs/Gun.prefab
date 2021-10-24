@@ -288,12 +288,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 856f66fd85e1bf14f84cec887f49c2e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_HasShotBullet: 0
   m_BulletSpawnPoint: {fileID: 0}
   m_BulletPrefab: {fileID: 0}
   m_FireRate: 0
-  m_ClipSize: 0
   m_AimPoint: {fileID: 4143102979699341885}
+  m_Clips:
+  - {fileID: 1039418213979307666, guid: 21d4faf6d25087e4da8185ad98dac5e6, type: 3}
+  m_ClipType: 0
+  m_DoesGunStartWithAClip: 0
 --- !u!1 &8645937529528611845
 GameObject:
   m_ObjectHideFlags: 0

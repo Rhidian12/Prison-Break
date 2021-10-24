@@ -118,6 +118,15 @@ public class InfraredScanner : MonoBehaviour
     void Start()
     {
         Assert.IsNotNull(m_MaterialToApply);
+
+        foreach (GameObject gameObject in FindObjectsOfType<GameObject>())
+        {
+            // flag each gameObject that isn't the player to ignore the collision
+            if (!gameObject.CompareTag("Player"))
+            {
+                Physics.IgnoreCollision(GetComponent<BoxCollider>(), GetComponent<Collider>());
+            }
+        }
     }
 
     // Update is called once per frame

@@ -362,6 +362,18 @@ PrefabInstance:
       propertyPath: m_BulletSpawnPoint
       value: 
       objectReference: {fileID: 5653317001192970836}
+    - target: {fileID: 4875671093178942589, guid: 26cdf7b2eb6cd2c459e0e994e9f08b6c, type: 3}
+      propertyPath: m_Clips.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4875671093178942589, guid: 26cdf7b2eb6cd2c459e0e994e9f08b6c, type: 3}
+      propertyPath: m_Clips.Array.data[0]
+      value: 
+      objectReference: {fileID: 4802981726876498829, guid: 7f6b58b259c671a45a6e438cbae0f4c5, type: 3}
+    - target: {fileID: 4875671093178942589, guid: 26cdf7b2eb6cd2c459e0e994e9f08b6c, type: 3}
+      propertyPath: m_DoesGunStartWithAClip
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5940629824643948505, guid: 26cdf7b2eb6cd2c459e0e994e9f08b6c, type: 3}
       propertyPath: m_RootOrder
       value: 0
