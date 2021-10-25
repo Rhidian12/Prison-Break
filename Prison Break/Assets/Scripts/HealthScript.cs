@@ -7,7 +7,6 @@ public class HealthScript : MonoBehaviour
     [SerializeField] private int m_MaxHealth;
 
     private int m_CurrentHealth = 0;
-    private bool m_IsDeathMessageSent = false;
 
     public int GetMaxHealth
     {
@@ -22,18 +21,12 @@ public class HealthScript : MonoBehaviour
 
     private void Update()
     {
-        if (m_IsDeathMessageSent)
-        {
-            /* If the Death Message was Sent, We can just destroy the GameObject */
-            Destroy(gameObject);
-        }
-
         /* Are we dead? */
         if (m_CurrentHealth <= 0)
         {
-            SendMessage("OnDeath");
-            m_IsDeathMessageSent = true;
-            return; /* Stop the Update here */
+            /* If the Death Message was Sent, We can just destroy the GameObject */
+            Destroy(gameObject);
+            return;
         }
     }
 

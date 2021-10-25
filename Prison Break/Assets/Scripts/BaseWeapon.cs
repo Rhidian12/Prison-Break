@@ -21,6 +21,11 @@ public class BaseWeapon : MonoBehaviour
         foreach (Clip clip in m_Clips)
             if (!clip.isActiveAndEnabled)
                 clip.Start();
+
+        /* Put AimPoint at Reticle's position */
+        var test = GetComponentInChildren<Image>().transform.position;
+        test.z += 50f; // Make sure the aim point is far in front of our player
+        m_AimPoint.position = Camera.main.ScreenToWorldPoint(test);
     }
 
     // Update is called once per frame

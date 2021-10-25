@@ -144,6 +144,9 @@ public class InfraredScanner : MonoBehaviour
 
         foreach (KeyValuePair<GameObject, RevealedObjectInformation> element in m_RevealedObjects)
         {
+            if (element.Value.meshRenderer == null)
+                continue;
+
             valuesToAdjust[element.Key] = new RevealedObjectInformation(element.Value.meshRenderer.gameObject, element.Value.originalMaterial, element.Value.currentTimeRevealed + Time.deltaTime);
 
             if (valuesToAdjust[element.Key].currentTimeRevealed >= m_TimeToRevealObject)
