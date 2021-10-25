@@ -5,9 +5,15 @@ using UnityEngine;
 public class Clip : MonoBehaviour
 {
     [SerializeField] private int m_ClipSize = 0;
+    [SerializeField] private int m_Damage = 0;
     [SerializeField] private ClipType m_ClipType;
     
     private int m_CurrentAmountOfBullets = 0;
+
+    public int GetDamage
+    {
+        get => m_Damage;
+    }
 
     public enum ClipType
     {

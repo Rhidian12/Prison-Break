@@ -14,7 +14,6 @@ public class BaseWeapon : MonoBehaviour
 
     private bool m_HasShotBullet = false;
     private float m_FireTimer = 0f;
-    private Vector3 m_BulletDirection = Vector3.zero;
 
     private void Start()
     {
@@ -22,9 +21,6 @@ public class BaseWeapon : MonoBehaviour
         foreach (Clip clip in m_Clips)
             if (!clip.isActiveAndEnabled)
                 clip.Start();
-
-        /* Set the bullet direction */
-        m_BulletDirection = (m_AimPoint.position - m_BulletSpawnPoint.position).normalized;
     }
 
     // Update is called once per frame
@@ -80,17 +76,15 @@ public class BaseWeapon : MonoBehaviour
             if (clip.CanFire())
             {
                 /* Check if we hit something */
-                if (Physics.Raycast(m_BulletSpawnPoint.position, m_BulletDirection, out RaycastHit raycastHit))
+                if (Physics.Raycast(m_BulletSpawnPoint.position, (m_AimPoint.position - m_BulletSpawnPoint.position).normalized, out RaycastHit raycastHit))
                 {
-                    /* Are we hitting the enemy? */
-                    if (raycastHit.collider.gameObject.CompareTag("Enemy"))
+                    /* Are we hitting the enemy? Or is the Player getting hit? */
+                    if (raycastHit.collider.gameObject.CompareTag("Enemy") || raycastHit.collider.gameObject.CompareTag("Player"))
                     {
-                        /* Hurt the Enemy */
+                        /* Hurt the Target */
+                        raycastHit.collider.gameObject.GetComponent<HealthScript>().RemoveHealth(clip.GetDamage);
                     }
                 }
-
-                //GameObject bullet = Instantiate(m_BulletPrefab, m_BulletSpawnPoint.position, Quaternion.identity);
-                //bullet.GetComponentInChildren<BulletMovement>().Velocity = (m_AimPoint.position - m_BulletSpawnPoint.position).normalized;
 
                 m_FireTimer += 1f / m_FireRate;
 

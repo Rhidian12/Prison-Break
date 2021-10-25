@@ -8,6 +8,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1039418213979307666, guid: 21d4faf6d25087e4da8185ad98dac5e6, type: 3}
+      propertyPath: m_Damage
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1039418213979307666, guid: 21d4faf6d25087e4da8185ad98dac5e6, type: 3}
       propertyPath: m_ClipSize
       value: 12
       objectReference: {fileID: 0}
