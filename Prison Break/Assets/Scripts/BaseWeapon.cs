@@ -19,6 +19,10 @@ public class BaseWeapon : MonoBehaviour
 
     private void Start()
     {
+        foreach (Clip clip in m_Clips)
+            if (!clip.isActiveAndEnabled)
+                clip.Start();
+
         if (m_DoesGunStartWithAClip)
             m_Clips.Add(new Clip(m_ClipType));
     }

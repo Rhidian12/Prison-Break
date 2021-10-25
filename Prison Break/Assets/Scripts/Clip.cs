@@ -36,7 +36,7 @@ public class Clip : MonoBehaviour
         m_ClipType = clipType;
     }
 
-    private void Awake()
+    public void Start()
     {
         m_CurrentAmountOfBullets = m_ClipSize;
     }
