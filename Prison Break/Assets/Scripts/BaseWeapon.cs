@@ -7,24 +7,24 @@ public class BaseWeapon : MonoBehaviour
 {
 
     [SerializeField] private Transform m_BulletSpawnPoint;
-    [SerializeField] private GameObject m_BulletPrefab;
     [SerializeField] private float m_FireRate = 0f;
     [SerializeField] private Transform m_AimPoint;
     [SerializeField] private List<Clip> m_Clips = new List<Clip>();
     [SerializeField] private Clip.ClipType m_ClipType;
-    [SerializeField] private bool m_DoesGunStartWithAClip = false;
 
     private bool m_HasShotBullet = false;
     private float m_FireTimer = 0f;
+    private Vector3 m_BulletDirection = Vector3.zero;
 
     private void Start()
     {
+        /* Check if there were clips added in the editor, since Awake() / Start() does not get called on them */
         foreach (Clip clip in m_Clips)
             if (!clip.isActiveAndEnabled)
                 clip.Start();
 
-        if (m_DoesGunStartWithAClip)
-            m_Clips.Add(new Clip(m_ClipType));
+        /* Set the bullet direction */
+        m_BulletDirection = (m_AimPoint.position - m_BulletSpawnPoint.position).normalized;
     }
 
     // Update is called once per frame
@@ -79,8 +79,18 @@ public class BaseWeapon : MonoBehaviour
         {
             if (clip.CanFire())
             {
-                GameObject bullet = Instantiate(m_BulletPrefab, m_BulletSpawnPoint.position, Quaternion.identity);
-                bullet.GetComponentInChildren<BulletMovement>().Velocity = (m_AimPoint.position - m_BulletSpawnPoint.position).normalized;
+                /* Check if we hit something */
+                if (Physics.Raycast(m_BulletSpawnPoint.position, m_BulletDirection, out RaycastHit raycastHit))
+                {
+                    /* Are we hitting the enemy? */
+                    if (raycastHit.collider.gameObject.CompareTag("Enemy"))
+                    {
+                        /* Hurt the Enemy */
+                    }
+                }
+
+                //GameObject bullet = Instantiate(m_BulletPrefab, m_BulletSpawnPoint.position, Quaternion.identity);
+                //bullet.GetComponentInChildren<BulletMovement>().Velocity = (m_AimPoint.position - m_BulletSpawnPoint.position).normalized;
 
                 m_FireTimer += 1f / m_FireRate;
 
