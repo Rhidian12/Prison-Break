@@ -139,6 +139,14 @@ public class InfraredScanner : MonoBehaviour
                 Debug.Log("SCAN READY");
         }
 
+        List<GameObject> gameObjectsToBeRemoved = new List<GameObject>();
+        foreach (KeyValuePair<GameObject, RevealedObjectInformation> element in m_RevealedObjects)
+            if (element.Key == null)
+                gameObjectsToBeRemoved.Add(element.Key);
+
+        foreach (GameObject element in gameObjectsToBeRemoved)
+            m_RevealedObjects.Remove(element);
+
         Dictionary<GameObject, RevealedObjectInformation> valuesToAdjust = new Dictionary<GameObject, RevealedObjectInformation>();
         List<GameObject> objectsToBeUnrevealed = new List<GameObject>();
 
@@ -228,6 +236,9 @@ public class InfraredScanner : MonoBehaviour
             while (Physics.Raycast(m_Player.transform.position, raycastDirection, out raycastHit, m_ScanRange, layerMask))
             {
                 GameObject gameObject = raycastHit.transform.gameObject;
+
+                if (gameObject == null)
+                    continue;
 
                 // Save the original gameObject Layer, and set the hit gameObject layer to the layerMask. Thus it will get ignored on the next pass
                 foundLayers.Add(new GameObjectLayerInformation(gameObject, gameObject.layer));
