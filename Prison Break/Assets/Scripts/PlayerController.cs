@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     private string m_MouseXAxis = "MouseX";
     private string m_MouseYAxis = "MouseY";
     private string m_InfraredScannerAxis = "Scanning";
+    private string m_ReloadingAxis = "Reloading";
 
     public InfraredScanner SetInfraredScannerScript
     {
@@ -32,6 +33,7 @@ public class PlayerController : MonoBehaviour
         HandlePlayerFiringInput();
         HandlePlayerAimInput();
         HandleInfraredScannerInput();
+        HandleReloadingInput();
     }
 
     private void HandlePlayerMovementInput()
@@ -55,5 +57,11 @@ public class PlayerController : MonoBehaviour
     {
         if (m_InfraredScannerScript != null && Input.GetAxisRaw(m_InfraredScannerAxis) > 0f)
             m_InfraredScannerScript.ScanAhead();
+    }
+
+    private void HandleReloadingInput()
+    {
+        if (Input.GetAxisRaw(m_ReloadingAxis) > 0f)
+            m_BaseWeaponScript.Reload();
     }
 }
