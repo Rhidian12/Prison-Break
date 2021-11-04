@@ -14,13 +14,6 @@ public class Clip : MonoBehaviour
     {
         get => m_Damage;
     }
-
-    public enum ClipType
-    {
-        None,
-        Pistol
-    }
-
     public int AmountOfRemainingBullets
     {
         get => m_CurrentAmountOfBullets;
@@ -28,6 +21,12 @@ public class Clip : MonoBehaviour
     public ClipType GetClipType
     {
         get => m_ClipType;
+    }
+
+    public enum ClipType
+    {
+        None,
+        Pistol
     }
 
     public Clip(ClipType clipType)
