@@ -103,7 +103,7 @@ InputManager:
     joyNum: 0
   - serializedVersion: 3
     m_Name: Reloading
-    descriptiveName: Reload player gun
+    descriptiveName: 
     descriptiveNegativeName: 
     negativeButton: 
     positiveButton: r
