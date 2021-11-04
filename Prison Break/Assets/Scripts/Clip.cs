@@ -61,7 +61,7 @@ public class Clip : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            other.gameObject.GetComponent<BaseWeapon>().AddClip(this);
+            other.gameObject.GetComponentInChildren<BaseWeapon>().AddClip(this);
 
             Destroy(gameObject);
         }
