@@ -17,12 +17,20 @@ public class Clip : MonoBehaviour
     public int AmountOfRemainingBullets
     {
         get => m_CurrentAmountOfBullets;
+        set
+        {
+            if (value <= m_ClipSize)
+                m_CurrentAmountOfBullets = value;
+        }
     }
     public ClipType GetClipType
     {
         get => m_ClipType;
     }
-
+    public int GetClipSize
+    {
+        get => m_ClipSize;
+    }
     public enum ClipType
     {
         None,

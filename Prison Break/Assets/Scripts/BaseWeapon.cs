@@ -58,17 +58,53 @@ public class BaseWeapon : MonoBehaviour
     public void Reload()
     {
         // do we have any clips to reload with?
-        if (m_Clips.Count == 0)
+        if (m_Clips.Count <= 1)
             return;
 
-        // reload
-        m_Clips.Add(new Clip(m_ClipType));
+        /* Our clip is already fully loaded */
+        if (m_Clips[0].AmountOfRemainingBullets == m_Clips[0].GetClipSize)
+            return;
 
         Clip clip = m_Clips[0];
         m_Clips.RemoveAt(0);
-        // do we have any bullets remaining in the clip we're about to get rid of?
-        if (clip.AmountOfRemainingBullets > 0)
-            m_Clips.Add(new Clip(clip.AmountOfRemainingBullets, m_ClipType)); // get a new clip with the remaining bullets
+
+        if (clip.AmountOfRemainingBullets >= 0)
+            m_Clips.Add(clip);
+
+        /* Make sure the front clip is filled */
+        if (m_Clips[0].AmountOfRemainingBullets <= m_Clips[0].GetClipSize)
+        {
+            if (m_Clips.Count > 1) /* We can only try to fill it if there are any other remaining clips */
+            {
+                int neededBullets = m_Clips[0].GetClipSize - m_Clips[0].AmountOfRemainingBullets;
+                for (int i = 1; i < m_Clips.Count; ++i)
+                {
+                    /* Does the clip have bullets? */
+                    if (m_Clips[i].AmountOfRemainingBullets > 0)
+                    {
+                        /* Only give as many bullets are needed */
+                        if (m_Clips[i].AmountOfRemainingBullets >= neededBullets)
+                        {
+                            m_Clips[0].AmountOfRemainingBullets = neededBullets + m_Clips[0].AmountOfRemainingBullets;
+                            m_Clips[i].AmountOfRemainingBullets = m_Clips[i].AmountOfRemainingBullets - neededBullets;
+                        }
+                        else /* The clip doesn't have enough ammo, so give it all the ammo it has remaining */
+                        {
+                            m_Clips[0].AmountOfRemainingBullets = m_Clips[i].AmountOfRemainingBullets + m_Clips[0].AmountOfRemainingBullets;
+                            neededBullets -= m_Clips[i].AmountOfRemainingBullets; /* Decrement the amount of bullets needed */
+                            m_Clips[i].AmountOfRemainingBullets = 0;
+                        }
+                    }
+
+                    /* Check if the clip has been filled */
+                    if (m_Clips[0].AmountOfRemainingBullets == m_Clips[0].GetClipSize)
+                        break;
+                }
+            }
+        }
+
+        /* Check if any clip has empty ammo, if it does, remove it */
+        m_Clips.RemoveAll( clip => clip.AmountOfRemainingBullets == 0 );
     }
 
     public void Fire()
