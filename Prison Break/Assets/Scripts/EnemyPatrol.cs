@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyPatrol : EnemyBehaviour
 {
@@ -10,8 +11,9 @@ public class EnemyPatrol : EnemyBehaviour
     [SerializeField] private float m_RotationSpeed = 150f;
 
     private bool m_ShouldGoToEnd = true;
-    private float m_DetectionRadius = 10f;
+    private float m_DetectionRadius = 2f;
     private Rigidbody m_Rigidbody;
+    private NavMeshAgent m_NavmeshAgent;
     private Vector2 m_CurrentRotation = new Vector2(45f, 45f);
 
     void Start()
@@ -19,40 +21,27 @@ public class EnemyPatrol : EnemyBehaviour
         m_DetectionRadius *= m_DetectionRadius; /* Square the detection radius */
 
         m_Rigidbody = GetComponent<Rigidbody>();
+        m_NavmeshAgent = GetComponent<NavMeshAgent>();
+
+        m_NavmeshAgent.speed = m_PatrolSpeed;
+        m_NavmeshAgent.angularSpeed = m_RotationSpeed;
     }
 
     void Update()
     {
         Vector3 target = Vector3.zero;
         if (m_ShouldGoToEnd)
-            target = m_EndLocation;
-        else
-            target = m_StartLocation;
-
-        if (Vector3.SqrMagnitude(target - m_Rigidbody.position) <= m_DetectionRadius)
         {
-            /* Go to the other target */
-            m_ShouldGoToEnd = !m_ShouldGoToEnd;
+            target = m_EndLocation;
+            m_NavmeshAgent.destination = m_EndLocation;
+        }
+        else
+        {
+            m_NavmeshAgent.destination = m_StartLocation;
+            target = m_StartLocation;
         }
 
-        /* Rotate towards the target */
-        float angleToMove = Vector3.Angle(m_Rigidbody.transform.forward, target);
-    }
-
-    private void FixedUpdate()
-    {
-        /* Move to the target */
-        Vector3 target = Vector3.zero;
-        if (m_ShouldGoToEnd)
-            target = m_EndLocation;
-        else
-            target = m_StartLocation;
-
-        Vector3 velocity = Vector3.zero;
-        velocity += (target - transform.position).normalized;
-        velocity *= m_PatrolSpeed * Time.fixedDeltaTime;
-        velocity.y = m_Rigidbody.velocity.y;
-
-        m_Rigidbody.velocity = velocity;
+        if (Vector3.SqrMagnitude(target - m_Rigidbody.position) <= m_DetectionRadius)
+            m_ShouldGoToEnd = !m_ShouldGoToEnd; /* Go to the other target */
     }
 }

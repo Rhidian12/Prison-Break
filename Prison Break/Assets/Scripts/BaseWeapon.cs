@@ -12,10 +12,13 @@ public class BaseWeapon : MonoBehaviour
     [SerializeField] private List<Clip> m_Clips = new List<Clip>();
     [SerializeField] private Clip.ClipType m_ClipType;
 
-    private Text m_CurrentAmmoText = null;
-    private Text m_TotalAmmoText = null;
     private bool m_HasShotBullet = false;
     private float m_FireTimer = 0f;
+
+    public List<Clip> GetClips
+    {
+        get => m_Clips;
+    }
 
     private void Start()
     {
@@ -28,11 +31,6 @@ public class BaseWeapon : MonoBehaviour
         var test = GetComponentInChildren<Image>().transform.position;
         test.z += 50f; // Make sure the aim point is far in front of our player
         m_AimPoint.position = Camera.main.ScreenToWorldPoint(test);
-
-        /* Get the Text objects */
-        Text[] textObjects = GetComponentsInChildren<Text>();
-        m_CurrentAmmoText = textObjects[0];
-        m_TotalAmmoText = textObjects[2];
     }
 
     // Update is called once per frame
@@ -45,8 +43,6 @@ public class BaseWeapon : MonoBehaviour
             FireBullet();
 
         m_HasShotBullet = false;
-
-        UpdateBulletTextUI();
     }
 
     public void AddClip(Clip clip)
@@ -141,16 +137,5 @@ public class BaseWeapon : MonoBehaviour
                 clip.Fire();
             }
         }
-    }
-
-    private void UpdateBulletTextUI()
-    {
-        m_CurrentAmmoText.text = m_Clips[0].AmountOfRemainingBullets.ToString();
-
-        int totalAmmo = 0;
-        for (int i = 1; i < m_Clips.Count; ++i)
-            totalAmmo += m_Clips[i].AmountOfRemainingBullets;
-
-        m_TotalAmmoText.text = totalAmmo.ToString();
     }
 }
