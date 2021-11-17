@@ -7,6 +7,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 685272019892626662, guid: 26cdf7b2eb6cd2c459e0e994e9f08b6c, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1736969019616330799, guid: 26cdf7b2eb6cd2c459e0e994e9f08b6c, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2786292058887011799, guid: 26cdf7b2eb6cd2c459e0e994e9f08b6c, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.189355
@@ -30,6 +38,10 @@ PrefabInstance:
     - target: {fileID: 2786292058887011799, guid: 26cdf7b2eb6cd2c459e0e994e9f08b6c, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.68
+      objectReference: {fileID: 0}
+    - target: {fileID: 3722375498192597476, guid: 26cdf7b2eb6cd2c459e0e994e9f08b6c, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4875671093178942589, guid: 26cdf7b2eb6cd2c459e0e994e9f08b6c, type: 3}
       propertyPath: m_ClipType
@@ -103,9 +115,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7774916415182428095, guid: 26cdf7b2eb6cd2c459e0e994e9f08b6c, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8501721771255219036, guid: 26cdf7b2eb6cd2c459e0e994e9f08b6c, type: 3}
       propertyPath: m_Name
       value: Pistol
+      objectReference: {fileID: 0}
+    - target: {fileID: 8501721771255219036, guid: 26cdf7b2eb6cd2c459e0e994e9f08b6c, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8645937529528611845, guid: 26cdf7b2eb6cd2c459e0e994e9f08b6c, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 26cdf7b2eb6cd2c459e0e994e9f08b6c, type: 3}

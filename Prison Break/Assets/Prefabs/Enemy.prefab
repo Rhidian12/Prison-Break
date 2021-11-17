@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4285924644038856667}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: FOV
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 1713480059437707631}
   - component: {fileID: 3528482042106721569}
   - component: {fileID: 6303258692675623787}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: EnemyVisuals
   m_TagString: Visuals
   m_Icon: {fileID: 0}
@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 6533518853499378118}
   - component: {fileID: 5614606517164452714}
   - component: {fileID: 1409217089642012731}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -323,6 +323,14 @@ PrefabInstance:
     - target: {fileID: 1203499607785029905, guid: 47d71eb78c4d7d64b944b02ad16ccc62, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2964747981735741815, guid: 47d71eb78c4d7d64b944b02ad16ccc62, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3836611145341496013, guid: 47d71eb78c4d7d64b944b02ad16ccc62, type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3980835955228040596, guid: 47d71eb78c4d7d64b944b02ad16ccc62, type: 3}
       propertyPath: m_Name

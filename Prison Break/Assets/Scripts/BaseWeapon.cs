@@ -121,13 +121,19 @@ public class BaseWeapon : MonoBehaviour
         {
             if (clip.CanFire())
             {
+                int layerMask = LayerMask.GetMask("Enemy");
+
+                
+
                 Debug.DrawRay(m_BulletSpawnPoint.position, (m_AimPoint.position - m_BulletSpawnPoint.position).normalized * 50f, Color.red, 5f, false);
                 /* Check if we hit something */
-                if (Physics.Raycast(m_BulletSpawnPoint.position, (m_AimPoint.position - m_BulletSpawnPoint.position).normalized, out RaycastHit raycastHit))
+                if (Physics.Raycast(m_BulletSpawnPoint.position, (m_AimPoint.position - m_BulletSpawnPoint.position).normalized, out RaycastHit raycastHit,
+                    float.MaxValue, layerMask))
                 {
                     /* Are we hitting the enemy? Or is the Player getting hit? */
                     if (raycastHit.collider.gameObject.CompareTag("Enemy") || raycastHit.collider.gameObject.CompareTag("Player"))
                     {
+                        Debug.Log("HIT");
                         /* Hurt the Target */
                         raycastHit.collider.gameObject.GetComponent<HealthScript>().RemoveHealth(clip.GetDamage);
                     }
