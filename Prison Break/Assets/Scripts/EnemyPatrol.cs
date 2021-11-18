@@ -14,7 +14,6 @@ public class EnemyPatrol : EnemyBehaviour
     private float m_DetectionRadius = 2f;
     private Rigidbody m_Rigidbody;
     private NavMeshAgent m_NavmeshAgent;
-    private Vector2 m_CurrentRotation = new Vector2(45f, 45f);
 
     void Start()
     {
