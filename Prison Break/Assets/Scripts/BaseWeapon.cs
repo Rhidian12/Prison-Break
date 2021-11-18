@@ -13,6 +13,7 @@ public class BaseWeapon : MonoBehaviour
     [SerializeField] private Clip.ClipType m_ClipType;
 
     private bool m_HasShotBullet = false;
+    private bool m_ShotFired = false;
     private float m_FireTimer = 0f;
 
     public List<Clip> GetClips
@@ -40,9 +41,18 @@ public class BaseWeapon : MonoBehaviour
             m_FireTimer -= Time.deltaTime;
 
         if (m_FireTimer < 0f)
-            FireBullet();
+            m_ShotFired = true;
 
         m_HasShotBullet = false;
+    }
+
+    private void FixedUpdate()
+    {
+        if (m_ShotFired)
+        {
+            FireBullet();
+            m_ShotFired = false;
+        }
     }
 
     public void AddClip(Clip clip)
@@ -100,7 +110,7 @@ public class BaseWeapon : MonoBehaviour
         }
 
         /* Check if any clip has empty ammo, if it does, remove it */
-        m_Clips.RemoveAll( clip => clip.AmountOfRemainingBullets == 0 );
+        m_Clips.RemoveAll(clip => clip.AmountOfRemainingBullets == 0);
     }
 
     public void Fire()
@@ -123,7 +133,7 @@ public class BaseWeapon : MonoBehaviour
             {
                 int layerMask = LayerMask.GetMask("Enemy");
 
-                
+
 
                 Debug.DrawRay(m_BulletSpawnPoint.position, (m_AimPoint.position - m_BulletSpawnPoint.position).normalized * 50f, Color.red, 5f, false);
                 /* Check if we hit something */
