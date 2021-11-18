@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBehaviour : MonoBehaviour
+public abstract class EnemyBehaviour
 {
+    public abstract void Initialize();
+
+    public virtual void FixedUpdate() {}
+    public virtual void Update() {}
 }

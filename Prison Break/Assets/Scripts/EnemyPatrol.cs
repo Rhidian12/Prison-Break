@@ -15,18 +15,21 @@ public class EnemyPatrol : EnemyBehaviour
     private Rigidbody m_Rigidbody;
     private NavMeshAgent m_NavmeshAgent;
 
-    void Start()
+    public EnemyPatrol(Rigidbody rigidbody, NavMeshAgent agent)
+    {
+        m_Rigidbody = rigidbody;
+        m_NavmeshAgent = agent;
+    }
+
+    public override void Initialize()
     {
         m_DetectionRadius *= m_DetectionRadius; /* Square the detection radius */
-
-        m_Rigidbody = GetComponent<Rigidbody>();
-        m_NavmeshAgent = GetComponent<NavMeshAgent>();
 
         m_NavmeshAgent.speed = m_PatrolSpeed;
         m_NavmeshAgent.angularSpeed = m_RotationSpeed;
     }
 
-    void Update()
+    public override void Update()
     {
         Vector3 target = Vector3.zero;
         if (m_ShouldGoToEnd)

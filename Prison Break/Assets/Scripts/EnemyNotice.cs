@@ -23,14 +23,16 @@ public class EnemyNotice : EnemyBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
+    public EnemyNotice(Rigidbody rigidbody, NavMeshAgent agent)
     {
-        m_NavmeshAgent = GetComponent<NavMeshAgent>();
-        m_Rigidbody = GetComponent<Rigidbody>();
+        m_Rigidbody = rigidbody;
+        m_NavmeshAgent = agent;
     }
 
+    public override void Initialize() {}
+
     // Update is called once per frame
-    void Update()
+    public override void Update()
     {
         /* did our raycast see the player? */
         if (m_IsPlayerSpotted)
@@ -50,7 +52,7 @@ public class EnemyNotice : EnemyBehaviour
         }
     }
 
-    private void FixedUpdate()
+    public override void FixedUpdate()
     {
         m_IsPlayerSpotted = false;
 
