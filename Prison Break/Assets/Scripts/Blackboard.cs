@@ -41,11 +41,11 @@ public sealed class Blackboard
 			((BlackboardData<T>)value).Data = data;
 	}
 
-	public T GetData<T>(string id) where T : new()
+	public T GetData<T>(string id)
 	{
 		if (m_pData.TryGetValue(id, out IBlackboardData value))
 			return ((BlackboardData<T>)value).Data;
 		else
-			return new T();
+			throw new System.Exception();
 	}
 };
