@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyNotice : EnemyBehaviour
+public class EnemyNotice
 {
     [SerializeField] private float m_DetectionRadius = 0f;
     [SerializeField] private int m_DetectionAngleX = 0;
@@ -29,10 +29,8 @@ public class EnemyNotice : EnemyBehaviour
         m_NavmeshAgent = agent;
     }
 
-    public override void Initialize() {}
-
     // Update is called once per frame
-    public override void Update()
+    public void Update()
     {
         /* did our raycast see the player? */
         if (m_IsPlayerSpotted)
@@ -52,7 +50,7 @@ public class EnemyNotice : EnemyBehaviour
         }
     }
 
-    public override void FixedUpdate()
+    public void FixedUpdate()
     {
         m_IsPlayerSpotted = false;
 

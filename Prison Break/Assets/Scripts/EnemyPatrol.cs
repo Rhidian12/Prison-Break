@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyPatrol : EnemyBehaviour
+public class EnemyPatrol
 {
     [SerializeField] private Vector3 m_StartLocation = Vector3.zero;
     [SerializeField] private Vector3 m_EndLocation = Vector3.zero;
@@ -21,7 +21,7 @@ public class EnemyPatrol : EnemyBehaviour
         m_NavmeshAgent = agent;
     }
 
-    public override void Initialize()
+    public void Initialize()
     {
         m_DetectionRadius *= m_DetectionRadius; /* Square the detection radius */
 
@@ -29,7 +29,7 @@ public class EnemyPatrol : EnemyBehaviour
         m_NavmeshAgent.angularSpeed = m_RotationSpeed;
     }
 
-    public override void Update()
+    public void Update()
     {
         Vector3 target = Vector3.zero;
         if (m_ShouldGoToEnd)
