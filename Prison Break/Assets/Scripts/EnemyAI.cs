@@ -5,18 +5,13 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
-    private enum State
-    {
-        Patrolling,
-        NoticedPlayer,
-        Attacking
-    }
+    [SerializeField] private Vector3 m_PatrolTarget;
+    [SerializeField] private float m_TimeToNoticePlayer;
 
-    [SerializeField] private State m_EnemyState;
-
-    private Dictionary<string, EnemyBehaviour> m_EnemyBehaviours;
     private Rigidbody m_Rigidbody;
     private NavMeshAgent m_NavmeshAgent;
+    Blackboard m_Blackboard;
+    BehaviourTree m_BehaviourTree;
 
     // Start is called before the first frame update
     void Start()
@@ -24,45 +19,58 @@ public class EnemyAI : MonoBehaviour
         m_Rigidbody = GetComponent<Rigidbody>();
         m_NavmeshAgent = GetComponent<NavMeshAgent>();
 
-        EnemyPatrol patrol = new EnemyPatrol(m_Rigidbody, m_NavmeshAgent);
-        EnemyNotice notice = new EnemyNotice(m_Rigidbody, m_NavmeshAgent);
+        m_Blackboard = new Blackboard();
 
-        m_EnemyBehaviours.Add("patrol", patrol);
-        m_EnemyBehaviours.Add("notice", notice);
+        /* General Usage */
+        m_Blackboard.AddData("Rigidbody", m_Rigidbody);
+        m_Blackboard.AddData("NavMeshAgent", m_NavmeshAgent);
 
-        /*
-            Notice  =>   Patrol
-         */
+        /* Check if player is in FOV */
+        m_Blackboard.AddData("DetectionRadiusFOV", 10f);
+        m_Blackboard.AddData("DetectionAngleXFOV", 89f / 2f);
+        m_Blackboard.AddData("DetectionAngleYFOV", 135f / 2f); /* Apparently a human has a FOV of 135 degrees */
+        m_Blackboard.AddData("HasPlayerBeenSpotted", false);
 
-        foreach (KeyValuePair<string, EnemyBehaviour> behaviour in m_EnemyBehaviours)
-            behaviour.Value.Initialize();
+        /* Patrol */
+        m_Blackboard.AddData("PatrolSpeed", 300f);
+        m_Blackboard.AddData("RotationSpeed", 150f);
+        m_Blackboard.AddData("ShouldGoToEnd", true);
+        m_Blackboard.AddData("PatrolDetectionRange", 2f * 2f);
+        m_Blackboard.AddData("PatrolStart", m_Rigidbody.position);
+        m_Blackboard.AddData("PatrolEnd", m_PatrolTarget);
+
+        /* Notice */
+        m_Blackboard.AddData("TimeToNoticePlayer", m_TimeToNoticePlayer);
+        m_Blackboard.AddData("TimeToNoticePlayerTimer", 0f);
+        m_Blackboard.AddData("HasPlayerBeenNoticed", false);
+
+        m_BehaviourTree = new BehaviourTree(m_Blackboard,
+            new BehaviourSelector(new List<IBehaviour>
+                {
+                    new BehaviourSequence(new List<IBehaviour>
+                    {
+                        new BehaviourAction(EnemyBehaviours.CheckIfPlayerIsInFOV), /* Check FOV for player */
+                        new BehaviourSelector(new List<IBehaviour>
+                        {
+                            new BehaviourSequence(new List<IBehaviour> /* If player is in FOV, notice him after some time */
+                            {
+                                new BehaviourConditional(EnemyBehaviours.IsPlayerInFOV),
+                                new BehaviourAction(EnemyBehaviours.Notice)
+                            }),
+                            new BehaviourSequence(new List<IBehaviour> /* If player is not in FOV, patrol */
+                            {
+                                new BehaviourInvertedConditional(EnemyBehaviours.IsPlayerInFOV),
+                                new BehaviourAction(EnemyBehaviours.Patrol)
+                            })
+                        })
+                    })
+                })
+            );
     }
 
     // Update is called once per frame
     void Update()
     {
-        /* Trust me, this disgusts me more than it does you */
-        switch (m_EnemyState)
-        {
-            case State.NoticedPlayer:
-                {
-                    var notice = m_EnemyBehaviours["notice"];
-
-                    notice.FixedUpdate();
-                    notice.Update();
-
-                    if (((EnemyNotice)notice).HasPlayerBeenNoticed)
-                        m_EnemyState = State.Attacking;
-                    break;
-                }
-            case State.Patrolling:
-                {
-                    var patrol = m_EnemyBehaviours["patrol"];
-
-                    patrol.FixedUpdate();
-                    patrol.Update();
-                    break;
-                }
-        }
+        //m_BehaviourTree.Update();
     }
 }
