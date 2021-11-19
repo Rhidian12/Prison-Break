@@ -143,7 +143,7 @@ public sealed class BehaviourAction : IBehaviour
     }
 }
 
-public sealed class BehaviourTree : MonoBehaviour
+public sealed class BehaviourTree
 {
     private BehaviourState m_CurrentState = BehaviourState.Failure;
     private Blackboard m_Blackboard = null;
