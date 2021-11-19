@@ -110,6 +110,24 @@ public sealed class BehaviourConditional : IBehaviour
     }
 }
 
+public sealed class BehaviourInvertedConditional : IBehaviour
+{
+    private System.Func<Blackboard, bool> m_Condition;
+
+    public BehaviourInvertedConditional(System.Func<Blackboard, bool> condition)
+    {
+        m_Condition = condition;
+    }
+
+    public override BehaviourState Execute(Blackboard blackboard)
+    {
+        if (!m_Condition(blackboard))
+            return m_CurrentState = BehaviourState.Success;
+        else
+            return m_CurrentState = BehaviourState.Failure;
+    }
+}
+
 public sealed class BehaviourAction : IBehaviour
 {
     private System.Func<Blackboard, BehaviourState> m_Action;
