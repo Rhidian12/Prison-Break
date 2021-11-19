@@ -71,6 +71,6 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //m_BehaviourTree.Update();
+        m_BehaviourTree.Update();
     }
 }
