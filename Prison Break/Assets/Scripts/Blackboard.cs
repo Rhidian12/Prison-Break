@@ -27,7 +27,7 @@ public sealed class BlackboardData<T> : IBlackboardData
 
 public sealed class Blackboard
 {
-	private Dictionary<string, IBlackboardData> m_pData;
+	private Dictionary<string, IBlackboardData> m_pData = new Dictionary<string, IBlackboardData>();
 
 	public void AddData<T>(string id, T data)
 	{
