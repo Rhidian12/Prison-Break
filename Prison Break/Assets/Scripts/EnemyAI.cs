@@ -11,14 +11,16 @@ public class EnemyAI : MonoBehaviour
 
     private Rigidbody m_Rigidbody;
     private NavMeshAgent m_NavmeshAgent;
-    Blackboard m_Blackboard;
-    BehaviourTree m_BehaviourTree;
+    private Blackboard m_Blackboard;
+    private BehaviourTree m_BehaviourTree;
+    private BaseWeapon m_Weapon;
 
     // Start is called before the first frame update
     void Start()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
         m_NavmeshAgent = GetComponent<NavMeshAgent>();
+        m_Weapon = GetComponentInChildren<BaseWeapon>();
 
         m_Blackboard = new Blackboard();
 
@@ -26,6 +28,7 @@ public class EnemyAI : MonoBehaviour
         m_Blackboard.AddData("Rigidbody", m_Rigidbody);
         m_Blackboard.AddData("NavMeshAgent", m_NavmeshAgent);
         m_Blackboard.AddData("Player", m_Player);
+        m_Blackboard.AddData("Weapon", m_Weapon);
 
         /* Check if player is in FOV */
         m_Blackboard.AddData("DetectionRadiusFOV", 10f);
@@ -64,6 +67,11 @@ public class EnemyAI : MonoBehaviour
                                 new BehaviourInvertedConditional(EnemyBehaviours.IsPlayerInFOV),
                                 new BehaviourAction(EnemyBehaviours.Patrol)
                             })
+                        }),
+                        new BehaviourConditional(EnemyBehaviours.IsPlayerNoticed), /* Check if player has been noticed */
+                        new BehaviourSequence(new List<IBehaviour> /* if player has been noticed, attack player */
+                        {
+
                         })
                     })
                 })

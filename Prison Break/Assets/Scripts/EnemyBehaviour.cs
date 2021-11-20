@@ -113,4 +113,17 @@ public sealed class EnemyBehaviours
     {
         return blackboard.GetData<bool>("HasPlayerBeenNoticed");
     }
+
+    public static BehaviourState Attack(Blackboard blackboard)
+    {
+        GameObject player = blackboard.GetData<GameObject>("Player");
+        BaseWeapon weapon = blackboard.GetData<BaseWeapon>("Weapon");
+        Rigidbody rigidbody = blackboard.GetData<Rigidbody>("Rigidbody");
+
+        Vector3 toPlayer = player.transform.position - rigidbody.position;
+
+        /* make sure we can miss a shot AKA NO PERFECT ACCURACY */
+
+        return BehaviourState.Success;
+    }
 }
