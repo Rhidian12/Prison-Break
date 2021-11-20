@@ -28,7 +28,7 @@ public sealed class EnemyBehaviours
                 {
                     /* Check if the raycast hit the player */
 
-                    if (raycastHit.collider.gameObject.layer.ToString().Equals("Player"))
+                    if (raycastHit.collider.gameObject.layer.Equals(LayerMask.GetMask("Player")))
                     {
                         blackboard.ChangeData("HasPlayerBeenSpotted", true);
                         return BehaviourState.Success;
@@ -75,6 +75,8 @@ public sealed class EnemyBehaviours
 
         navMeshAgent.destination = target;
 
+        blackboard.ChangeData("ShouldGoToEnd", shouldGoToEnd);
+
         return BehaviourState.Success;
     }
 
@@ -84,7 +86,6 @@ public sealed class EnemyBehaviours
         bool isPlayerNoticed = blackboard.GetData<bool>("HasPlayerBeenNoticed");
         float timeToNoticePlayer = blackboard.GetData<float>("TimeToNoticePlayer");
         float timeToNoticePlayerTimer = blackboard.GetData<float>("TimeToNoticePlayerTimer");
-
 
         /* did our raycast see the player? */
         if (isPlayerSpotted)
