@@ -108,4 +108,9 @@ public sealed class EnemyBehaviours
 
         return BehaviourState.Success;
     }
+
+    public static bool IsPlayerNoticed(Blackboard blackboard)
+    {
+        return blackboard.GetData<bool>("HasPlayerBeenNoticed");
+    }
 }
