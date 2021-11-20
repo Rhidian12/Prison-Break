@@ -32,10 +32,10 @@ public class EnemyAI : MonoBehaviour
         m_Blackboard.AddData("HasPlayerBeenSpotted", false);
 
         /* Patrol */
-        m_Blackboard.AddData("PatrolSpeed", 300f);
-        m_Blackboard.AddData("RotationSpeed", 150f);
+        m_Blackboard.AddData("PatrolSpeed", 3f);
+        m_Blackboard.AddData("RotationSpeed", 75f);
         m_Blackboard.AddData("ShouldGoToEnd", true);
-        m_Blackboard.AddData("PatrolDetectionRange", 2f * 2f);
+        m_Blackboard.AddData("PatrolDetectionRange", 4f);
         m_Blackboard.AddData("PatrolStart", m_Rigidbody.position);
         m_Blackboard.AddData("PatrolEnd", m_PatrolTarget);
 
@@ -71,6 +71,8 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.DrawRay(m_Rigidbody.position, transform.forward, Color.red, 0.1f, false);
+
         m_BehaviourTree.Update();
     }
 }
