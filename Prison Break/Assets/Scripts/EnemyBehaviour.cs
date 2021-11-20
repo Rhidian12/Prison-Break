@@ -7,16 +7,16 @@ public sealed class EnemyBehaviours
 {
     public static BehaviourState CheckIfPlayerIsInFOV(Blackboard blackboard)
     {
-        int detectionRadius = blackboard.GetData<int>("DetectionRadiusFOV");
-        int detectionAngleX = blackboard.GetData<int>("DetectionAngleXFOV");
-        int detectionAngleY = blackboard.GetData<int>("DetectionAngleYFOV");
+        float detectionRadius = blackboard.GetData<float>("DetectionRadiusFOV");
+        float detectionAngleX = blackboard.GetData<float>("DetectionAngleXFOV");
+        float detectionAngleY = blackboard.GetData<float>("DetectionAngleYFOV");
         Rigidbody rigidbody = blackboard.GetData<Rigidbody>("Rigidbody");
 
         blackboard.ChangeData("HasPlayerBeenSpotted", false);
 
-        for (int x = -detectionAngleX; x < detectionAngleX; ++x)
+        for (float x = -detectionAngleX; x < detectionAngleX; ++x)
         {
-            for (int y = -detectionAngleY; y < detectionAngleY; ++y)
+            for (float y = -detectionAngleY; y < detectionAngleY; ++y)
             {
                 /* Raycast everything except enemies */
                 int layerMask = ~LayerMask.GetMask("Enemy");
