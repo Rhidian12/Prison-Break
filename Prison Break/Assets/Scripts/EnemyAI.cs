@@ -7,6 +7,7 @@ public class EnemyAI : MonoBehaviour
 {
     [SerializeField] private Vector3 m_PatrolTarget;
     [SerializeField] private float m_TimeToNoticePlayer;
+    [SerializeField] private GameObject m_Player;
 
     private Rigidbody m_Rigidbody;
     private NavMeshAgent m_NavmeshAgent;
@@ -24,11 +25,12 @@ public class EnemyAI : MonoBehaviour
         /* General Usage */
         m_Blackboard.AddData("Rigidbody", m_Rigidbody);
         m_Blackboard.AddData("NavMeshAgent", m_NavmeshAgent);
+        m_Blackboard.AddData("Player", m_Player);
 
         /* Check if player is in FOV */
         m_Blackboard.AddData("DetectionRadiusFOV", 10f);
-        m_Blackboard.AddData("DetectionAngleXFOV", 89f / 2f);
-        m_Blackboard.AddData("DetectionAngleYFOV", 135f / 2f); /* Apparently a human has a FOV of 135 degrees */
+        m_Blackboard.AddData("DetectionAngleXFOV", 89f);
+        m_Blackboard.AddData("DetectionAngleYFOV", 135f); /* Apparently a human has a FOV of 135 degrees */
         m_Blackboard.AddData("HasPlayerBeenSpotted", false);
 
         /* Patrol */
@@ -71,8 +73,9 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.DrawRay(m_Rigidbody.position, transform.forward, Color.red, 0.1f, false);
-
         m_BehaviourTree.Update();
+
+        if (m_Blackboard.GetData<bool>("HasPlayerBeenNoticed"))
+            Debug.Log("PLAYER NOTICED");
     }
 }

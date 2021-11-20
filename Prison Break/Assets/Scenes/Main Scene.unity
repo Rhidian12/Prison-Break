@@ -282,6 +282,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 117843210544406309, guid: c3c6e2fdc896eb2459442db829f946b0, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5440890121946556984, guid: c3c6e2fdc896eb2459442db829f946b0, type: 3}
       propertyPath: m_Name
       value: Player
@@ -5381,6 +5385,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!1 &1163614672 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5440890121946556984, guid: c3c6e2fdc896eb2459442db829f946b0, type: 3}
+  m_PrefabInstance: {fileID: 618815783}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1324387423
 GameObject:
   m_ObjectHideFlags: 0
@@ -5555,6 +5564,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 8732283281176462166, guid: aace156739c1a034ea2901a2a16ec618, type: 3}
+      propertyPath: m_Player
+      value: 
+      objectReference: {fileID: 1163614672}
     - target: {fileID: 8732283281176462166, guid: aace156739c1a034ea2901a2a16ec618, type: 3}
       propertyPath: m_PatrolTarget.x
       value: -15

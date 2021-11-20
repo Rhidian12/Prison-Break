@@ -11,28 +11,27 @@ public sealed class EnemyBehaviours
         float detectionAngleX = blackboard.GetData<float>("DetectionAngleXFOV");
         float detectionAngleY = blackboard.GetData<float>("DetectionAngleYFOV");
         Rigidbody rigidbody = blackboard.GetData<Rigidbody>("Rigidbody");
+        GameObject player = blackboard.GetData<GameObject>("Player");
 
         blackboard.ChangeData("HasPlayerBeenSpotted", false);
 
-        for (float x = -detectionAngleX; x < detectionAngleX; ++x)
+        Vector3 toPlayer = player.transform.position - rigidbody.position;
+
+        Debug.DrawRay(rigidbody.position, toPlayer, Color.red, .5f, false);
+
+        if (Vector3.Angle(rigidbody.transform.forward, toPlayer) <= detectionAngleY &&
+            Vector3.Angle(rigidbody.transform.forward, toPlayer) <= detectionAngleX)
         {
-            for (float y = -detectionAngleY; y < detectionAngleY; ++y)
+            /* Raycast everything except enemies */
+            int layerMask = ~LayerMask.GetMask("Enemy");
+
+            if (Physics.Raycast(rigidbody.position, toPlayer.normalized, out RaycastHit raycastHit, detectionRadius, layerMask))
             {
-                /* Raycast everything except enemies */
-                int layerMask = ~LayerMask.GetMask("Enemy");
-
-                Vector3 direction = Quaternion.AngleAxis(x, Vector3.right) * rigidbody.transform.forward;
-                direction = Quaternion.AngleAxis(y, Vector3.up) * direction;
-
-                if (Physics.Raycast(rigidbody.position, direction.normalized, out RaycastHit raycastHit, detectionRadius, layerMask))
+                /* Check if the raycast hit the player */
+                if (raycastHit.collider.gameObject.CompareTag("Player"))
                 {
-                    /* Check if the raycast hit the player */
-
-                    if (raycastHit.collider.gameObject.layer.Equals(LayerMask.GetMask("Player")))
-                    {
-                        blackboard.ChangeData("HasPlayerBeenSpotted", true);
-                        return BehaviourState.Success;
-                    }
+                    blackboard.ChangeData("HasPlayerBeenSpotted", true);
+                    return BehaviourState.Success;
                 }
             }
         }
@@ -103,6 +102,9 @@ public sealed class EnemyBehaviours
             timeToNoticePlayerTimer = 0f;
             isPlayerNoticed = false;
         }
+
+        blackboard.ChangeData("TimeToNoticePlayerTimer", timeToNoticePlayerTimer);
+        blackboard.ChangeData("HasPlayerBeenNoticed", isPlayerNoticed);
 
         return BehaviourState.Success;
     }
