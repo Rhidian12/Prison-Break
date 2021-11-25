@@ -133,8 +133,6 @@ public class BaseWeapon : MonoBehaviour
             {
                 int layerMask = LayerMask.GetMask("Enemy");
 
-
-
                 Debug.DrawRay(m_BulletSpawnPoint.position, (m_AimPoint.position - m_BulletSpawnPoint.position).normalized * 50f, Color.red, 5f, false);
                 /* Check if we hit something */
                 if (Physics.Raycast(m_BulletSpawnPoint.position, (m_AimPoint.position - m_BulletSpawnPoint.position).normalized, out RaycastHit raycastHit,

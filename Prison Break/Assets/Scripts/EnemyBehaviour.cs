@@ -119,10 +119,12 @@ public sealed class EnemyBehaviours
         GameObject player = blackboard.GetData<GameObject>("Player");
         BaseWeapon weapon = blackboard.GetData<BaseWeapon>("Weapon");
         Rigidbody rigidbody = blackboard.GetData<Rigidbody>("Rigidbody");
+        float maxAngleDivergence = blackboard.GetData<float>("MaxAngleDivergence");
 
         Vector3 toPlayer = player.transform.position - rigidbody.position;
 
         /* make sure we can miss a shot AKA NO PERFECT ACCURACY */
+        weapon.Fire();
 
         return BehaviourState.Success;
     }
