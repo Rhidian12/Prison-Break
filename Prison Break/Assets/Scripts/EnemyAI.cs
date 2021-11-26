@@ -87,6 +87,9 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        m_NavmeshAgent.speed = 0f;
+        m_NavmeshAgent.angularSpeed = 0f;
+
         m_BehaviourTree.Update();
     }
 }
