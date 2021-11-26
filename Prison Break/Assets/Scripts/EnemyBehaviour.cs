@@ -17,10 +17,10 @@ public sealed class EnemyBehaviours
 
         Vector3 toPlayer = player.transform.position - rigidbody.position;
 
-        Debug.DrawRay(rigidbody.position, toPlayer, Color.red, .5f, false);
+        Debug.DrawRay(rigidbody.position, toPlayer, Color.red, .1f, false);
 
-        if (Vector3.Angle(rigidbody.transform.forward, toPlayer) <= detectionAngleY &&
-            Vector3.Angle(rigidbody.transform.forward, toPlayer) <= detectionAngleX)
+        float angle = Vector3.Angle(rigidbody.transform.forward, toPlayer.normalized);
+        if (angle <= detectionAngleY /*&& angle <= detectionAngleX*/)
         {
             /* Raycast everything except enemies */
             int layerMask = ~LayerMask.GetMask("Enemy");
@@ -114,18 +114,57 @@ public sealed class EnemyBehaviours
         return blackboard.GetData<bool>("HasPlayerBeenNoticed");
     }
 
-    public static BehaviourState Attack(Blackboard blackboard)
+    public static BehaviourState RotateTowardsPlayer(Blackboard blackboard)
     {
+        if (!IsPlayerNoticed(blackboard))
+            return BehaviourState.Failure;
+
         GameObject player = blackboard.GetData<GameObject>("Player");
-        BaseWeapon weapon = blackboard.GetData<BaseWeapon>("Weapon");
         Rigidbody rigidbody = blackboard.GetData<Rigidbody>("Rigidbody");
-        float maxAngleDivergence = blackboard.GetData<float>("MaxAngleDivergence");
 
         Vector3 toPlayer = player.transform.position - rigidbody.position;
 
+        float angleDifference = Vector3.SignedAngle(rigidbody.transform.forward, toPlayer.normalized, Vector3.up);
+
+        if (angleDifference >= 180f)
+            angleDifference = 360f - angleDifference;
+
+        rigidbody.transform.Rotate(new Vector3(0f, angleDifference * Time.deltaTime * rigidbody.maxAngularVelocity, 0f), Space.Self);
+
+        if (IsAimingAtPlayer(blackboard))
+            return BehaviourState.Success;
+        else
+            return BehaviourState.Running;
+    }
+
+    public static bool IsAimingAtPlayer(Blackboard blackboard)
+    {
+        GameObject player = blackboard.GetData<GameObject>("Player");
+        Rigidbody rigidbody = blackboard.GetData<Rigidbody>("Rigidbody");
+        float maxAngleToMiss = blackboard.GetData<float>("MaxAngleToMiss");
+
+        Vector3 toPlayer = player.transform.position - rigidbody.position;
+
+        return Vector3.Angle(rigidbody.transform.forward, toPlayer.normalized) <= maxAngleToMiss;
+    }
+
+    public static BehaviourState Attack(Blackboard blackboard)
+    {
+        BaseWeapon weapon = blackboard.GetData<BaseWeapon>("Weapon");
+
+        /* I'll do this if I have time */
         /* make sure we can miss a shot AKA NO PERFECT ACCURACY */
-        weapon.Fire();
+
+        if (weapon.CanFire())
+            weapon.FireBullet(~LayerMask.GetMask("Enemy"));
 
         return BehaviourState.Success;
+    }
+
+    public static bool IsPlayerAlive(Blackboard blackboard)
+    {
+        GameObject player = blackboard.GetData<GameObject>("Player");
+
+        return player.GetComponent<HealthScript>().GetMaxHealth > 0f;
     }
 }

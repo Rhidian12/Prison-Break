@@ -12,8 +12,7 @@ public class BaseWeapon : MonoBehaviour
     [SerializeField] private List<Clip> m_Clips = new List<Clip>();
     [SerializeField] private Clip.ClipType m_ClipType;
 
-    private bool m_HasShotBullet = false;
-    private bool m_ShotFired = false;
+    private bool m_CanGunBeFired = false;
     private float m_FireTimer = 0f;
 
     public List<Clip> GetClips
@@ -41,18 +40,7 @@ public class BaseWeapon : MonoBehaviour
             m_FireTimer -= Time.deltaTime;
 
         if (m_FireTimer < 0f)
-            m_ShotFired = true;
-
-        m_HasShotBullet = false;
-    }
-
-    private void FixedUpdate()
-    {
-        if (m_ShotFired)
-        {
-            FireBullet();
-            m_ShotFired = false;
-        }
+            m_CanGunBeFired = true;
     }
 
     public void AddClip(Clip clip)
@@ -113,12 +101,7 @@ public class BaseWeapon : MonoBehaviour
         m_Clips.RemoveAll(clip => clip.AmountOfRemainingBullets == 0);
     }
 
-    public void Fire()
-    {
-        m_HasShotBullet = true;
-    }
-
-    private void FireBullet()
+    public void FireBullet(int layerMask)
     {
         // Check if we can fire the gun
         if (m_Clips.Count == 0)
@@ -127,12 +110,10 @@ public class BaseWeapon : MonoBehaviour
         Clip clip = m_Clips[0];
 
         // If the player has pressed the trigger
-        if (m_HasShotBullet)
+        if (m_CanGunBeFired)
         {
             if (clip.CanFire())
             {
-                int layerMask = LayerMask.GetMask("Enemy");
-
                 Debug.DrawRay(m_BulletSpawnPoint.position, (m_AimPoint.position - m_BulletSpawnPoint.position).normalized * 50f, Color.red, 5f, false);
                 /* Check if we hit something */
                 if (Physics.Raycast(m_BulletSpawnPoint.position, (m_AimPoint.position - m_BulletSpawnPoint.position).normalized, out RaycastHit raycastHit,
@@ -141,7 +122,6 @@ public class BaseWeapon : MonoBehaviour
                     /* Are we hitting the enemy? Or is the Player getting hit? */
                     if (raycastHit.collider.gameObject.CompareTag("Enemy") || raycastHit.collider.gameObject.CompareTag("Player"))
                     {
-                        Debug.Log("HIT");
                         /* Hurt the Target */
                         raycastHit.collider.gameObject.GetComponent<HealthScript>().RemoveHealth(clip.GetDamage);
                     }
@@ -150,7 +130,20 @@ public class BaseWeapon : MonoBehaviour
                 m_FireTimer += 1f / m_FireRate;
 
                 clip.Fire();
+
+                m_CanGunBeFired = false;
             }
         }
+    }
+
+    public bool CanFire()
+    {
+        return m_CanGunBeFired && (m_Clips.Count != 0 ? m_Clips[0].AmountOfRemainingBullets > 0 : false);
+
+        // if (m_Clips.Count != 0)
+        //     bool b = m_Clips[0].AmountOfRemainingBullets > 0;
+        // else
+        //     bool b = false;
+        // return m_CanGunBeFired && b;
     }
 }

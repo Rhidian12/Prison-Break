@@ -49,41 +49,44 @@ public class EnemyAI : MonoBehaviour
         m_Blackboard.AddData("TimeToNoticePlayerTimer", 0f);
         m_Blackboard.AddData("HasPlayerBeenNoticed", false);
 
+        /* Rotate Towards Player */
+        m_Blackboard.AddData("MaxAngleToMiss", 2f);
+
+        /* Attack */
+
         m_BehaviourTree = new BehaviourTree(m_Blackboard,
-            new BehaviourSelector(new List<IBehaviour>
+            new BehaviourSequence(new List<IBehaviour>
+            {
+                new BehaviourConditional(EnemyBehaviours.IsPlayerAlive), /* only do something if the player is alive */
+                new BehaviourAction(EnemyBehaviours.CheckIfPlayerIsInFOV), /* Check FOV for player */
+                new BehaviourAction(EnemyBehaviours.Notice), /* Try to notice the player */
+
+                new BehaviourSelector(new List<IBehaviour> /* Decide what Sub-Tree to Execute */
                 {
-                    new BehaviourSequence(new List<IBehaviour>
+                    new BehaviourSequence(new List<IBehaviour> /* ATTACK SUB-TREE */
                     {
-                        new BehaviourAction(EnemyBehaviours.CheckIfPlayerIsInFOV), /* Check FOV for player */
-                        new BehaviourSelector(new List<IBehaviour>
-                        {
-                            new BehaviourSequence(new List<IBehaviour> /* If player is in FOV, notice him after some time */
-                            {
-                                new BehaviourConditional(EnemyBehaviours.IsPlayerInFOV),
-                                new BehaviourAction(EnemyBehaviours.Notice)
-                            }),
-                            new BehaviourSequence(new List<IBehaviour> /* If player is not in FOV, patrol */
-                            {
-                                new BehaviourInvertedConditional(EnemyBehaviours.IsPlayerInFOV),
-                                new BehaviourAction(EnemyBehaviours.Patrol)
-                            })
-                        }),
                         new BehaviourConditional(EnemyBehaviours.IsPlayerNoticed), /* Check if player has been noticed */
                         new BehaviourSequence(new List<IBehaviour> /* if player has been noticed, attack player */
                         {
-
+                            new BehaviourAction(EnemyBehaviours.RotateTowardsPlayer), /* First, rotate towards the player */
+                            new BehaviourConditional(EnemyBehaviours.IsAimingAtPlayer), /* Next, check if we're aiming at the player */
+                            new BehaviourAction(EnemyBehaviours.Attack) /* if we are aiming at the player, fire */
                         })
+                    }),
+
+                    new BehaviourSequence(new List<IBehaviour> /* PATROL SUB-TREE */
+                    {
+                        new BehaviourInvertedConditional(EnemyBehaviours.IsPlayerInFOV),
+                        new BehaviourAction(EnemyBehaviours.Patrol)
                     })
                 })
-            );
+            })
+        );
     }
 
     // Update is called once per frame
     void Update()
     {
         m_BehaviourTree.Update();
-
-        if (m_Blackboard.GetData<bool>("HasPlayerBeenNoticed"))
-            Debug.Log("PLAYER NOTICED");
     }
 }

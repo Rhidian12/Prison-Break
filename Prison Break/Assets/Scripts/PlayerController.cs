@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
     private void HandlePlayerFiringInput()
     {
         if (Input.GetAxisRaw(m_PlayerFiringAxis) > 0f)
-            m_BaseWeaponScript.Fire();
+            m_BaseWeaponScript.FireBullet(~LayerMask.GetMask("Player"));
     }
 
     private void HandlePlayerAimInput()

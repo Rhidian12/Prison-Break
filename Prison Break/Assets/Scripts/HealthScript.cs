@@ -26,7 +26,6 @@ public class HealthScript : MonoBehaviour
         {
             /* If the Death Message was Sent, We can just destroy the GameObject */
             Destroy(gameObject);
-            return;
         }
     }
 
