@@ -165,6 +165,9 @@ public sealed class EnemyBehaviours
     {
         GameObject player = blackboard.GetData<GameObject>("Player");
 
+        if (player == null)
+            return false;
+
         return player.GetComponent<HealthScript>().GetMaxHealth > 0f;
     }
 }
