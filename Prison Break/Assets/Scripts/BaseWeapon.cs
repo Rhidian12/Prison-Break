@@ -99,6 +99,8 @@ public class BaseWeapon : MonoBehaviour
 
         /* Check if any clip has empty ammo, if it does, remove it */
         m_Clips.RemoveAll(clip => clip.AmountOfRemainingBullets == 0);
+
+        SendMessage("PlaySound", "PistolReload");
     }
 
     public void FireBullet(int layerMask)
