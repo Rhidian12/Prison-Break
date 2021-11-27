@@ -132,6 +132,8 @@ public class BaseWeapon : MonoBehaviour
                 clip.Fire();
 
                 m_CanGunBeFired = false;
+
+                SendMessage("PlaySound", "PistolShot");
             }
         }
     }
