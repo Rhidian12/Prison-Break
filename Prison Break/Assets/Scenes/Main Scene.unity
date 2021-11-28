@@ -5540,21 +5540,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1644683726915197846, guid: 7f6b58b259c671a45a6e438cbae0f4c5, type: 3}
-      propertyPath: m_Height
-      value: 1.1069038
-      objectReference: {fileID: 0}
-    - target: {fileID: 1644683726915197846, guid: 7f6b58b259c671a45a6e438cbae0f4c5, type: 3}
-      propertyPath: m_Radius
-      value: 0.20788598
-      objectReference: {fileID: 0}
-    - target: {fileID: 1644683726915197846, guid: 7f6b58b259c671a45a6e438cbae0f4c5, type: 3}
-      propertyPath: m_Center.x
-      value: -0.09978223
-      objectReference: {fileID: 0}
-    - target: {fileID: 1644683726915197846, guid: 7f6b58b259c671a45a6e438cbae0f4c5, type: 3}
-      propertyPath: m_Center.y
-      value: -0.2034365
+    - target: {fileID: 3859574334172930183, guid: 7f6b58b259c671a45a6e438cbae0f4c5, type: 3}
+      propertyPath: m_UseGravity
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4396005510257092739, guid: 7f6b58b259c671a45a6e438cbae0f4c5, type: 3}
       propertyPath: m_RootOrder
@@ -5562,7 +5550,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4396005510257092739, guid: 7f6b58b259c671a45a6e438cbae0f4c5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.012
+      value: 5.31
       objectReference: {fileID: 0}
     - target: {fileID: 4396005510257092739, guid: 7f6b58b259c671a45a6e438cbae0f4c5, type: 3}
       propertyPath: m_LocalPosition.y
@@ -5603,6 +5591,10 @@ PrefabInstance:
     - target: {fileID: 4768331340294547603, guid: 7f6b58b259c671a45a6e438cbae0f4c5, type: 3}
       propertyPath: m_Name
       value: PistolAmmo
+      objectReference: {fileID: 0}
+    - target: {fileID: 8824321662408491289, guid: 7f6b58b259c671a45a6e438cbae0f4c5, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f6b58b259c671a45a6e438cbae0f4c5, type: 3}

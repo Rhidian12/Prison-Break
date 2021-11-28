@@ -199,6 +199,8 @@ public class InfraredScanner : MonoBehaviour
             m_Player.GetComponent<PlayerController>().SetInfraredScannerScript = this;
 
             transform.position = m_InfraredSocket.position;
+
+            GetComponent<Rigidbody>().detectCollisions = false;
         }
     }
 
