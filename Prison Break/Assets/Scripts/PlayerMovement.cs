@@ -37,5 +37,7 @@ public class PlayerMovement : MonoBehaviour
         newVelocity.y = m_RigidBody.velocity.y;
 
         m_RigidBody.velocity = newVelocity;
+
+        m_RigidBody.angularVelocity = Vector3.zero;
     }
 }

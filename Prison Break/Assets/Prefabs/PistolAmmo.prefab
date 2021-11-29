@@ -23,6 +23,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PistolAmmo
       objectReference: {fileID: 0}
+    - target: {fileID: 6914321848188356610, guid: 21d4faf6d25087e4da8185ad98dac5e6, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f60da3d114c87c24fa3acec0d4cc7201, type: 2}
     - target: {fileID: 8199612969150868892, guid: 21d4faf6d25087e4da8185ad98dac5e6, type: 3}
       propertyPath: m_RootOrder
       value: 0
