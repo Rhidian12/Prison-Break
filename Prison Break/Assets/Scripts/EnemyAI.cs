@@ -60,6 +60,7 @@ public class EnemyAI : MonoBehaviour
                 new BehaviourConditional(EnemyBehaviours.IsPlayerAlive), /* only do something if the player is alive */
                 new BehaviourAction(EnemyBehaviours.CheckIfPlayerIsInFOV), /* Check FOV for player */
                 new BehaviourAction(EnemyBehaviours.Notice), /* Try to notice the player */
+                new BehaviourAction(EnemyBehaviours.Reload), /* Reload weapon if necessary */
 
                 new BehaviourSelector(new List<IBehaviour> /* Decide what Sub-Tree to Execute */
                 {

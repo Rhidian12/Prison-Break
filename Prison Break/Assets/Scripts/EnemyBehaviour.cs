@@ -170,4 +170,15 @@ public sealed class EnemyBehaviours
 
         return player.GetComponent<HealthScript>().GetMaxHealth > 0f;
     }
+    
+    public static BehaviourState Reload(Blackboard blackboard)
+    {
+        BaseWeapon weapon = blackboard.GetData<BaseWeapon>("Weapon");
+
+        if (weapon.GetClips.Count > 0)
+            if (weapon.GetClips[0].AmountOfRemainingBullets <= 0)
+                weapon.Reload();
+
+        return BehaviourState.Success;
+    }
 }
